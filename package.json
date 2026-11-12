@@ -1,0 +1,274 @@
+{
+  "name": "angular-suffix-lens",
+  "displayName": "Angular Suffix Lens",
+  "description": "Shows Angular suffixes (home.service.ts, home.component.ts) for suffix-less files like home.ts, in Quick Open, workspace symbols, the Explorer and editor tabs, without renaming anything on disk.",
+  "version": "0.1.1",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.140.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "angular",
+    "suffix",
+    "quick open",
+    "file names",
+    "style guide"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/angular.json",
+    "workspaceContains:**/*.ts",
+    "onCommand:angularSuffixes.goToFile"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "angularSuffixes.goToFile",
+        "title": "Go to File (Angular Names)…",
+        "category": "Angular Suffix Lens"
+      },
+      {
+        "command": "angularSuffixes.reindex",
+        "title": "Re-index Workspace",
+        "category": "Angular Suffix Lens"
+      },
+      {
+        "command": "angularSuffixes.syncTabLabels",
+        "title": "Sync Editor Tab Labels Now",
+        "category": "Angular Suffix Lens"
+      },
+      {
+        "command": "angularSuffixes.removeTabLabels",
+        "title": "Remove Editor Tab Labels From Workspace Settings",
+        "category": "Angular Suffix Lens"
+      },
+      {
+        "command": "angularSuffixes.copyAngularName",
+        "title": "Copy Angular Name",
+        "category": "Angular Suffix Lens"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "angularSuffixes.goToFile",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "angularSuffixes.files",
+          "name": "Angular Files",
+          "when": "config.angularSuffixes.treeView"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "angularSuffixes.copyAngularName",
+          "when": "view == angularSuffixes.files && viewItem == angularFile"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "angularSuffixes.copyAngularName",
+          "group": "6_copypath"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Angular Suffix Lens",
+      "properties": {
+        "angularSuffixes.rules": {
+          "type": "array",
+          "order": 0,
+          "markdownDescription": "Ordered list of rules. The **first** rule whose `pattern` (a JavaScript regular expression) matches a file's contents decides the suffix that is shown, e.g. `home.ts` is shown as `home.service.ts`. Comments are ignored when matching. Add your own, e.g. `{ \"suffix\": \"store\", \"pattern\": \"signalStore\\\\(\" }`.",
+          "default": [
+            {
+              "suffix": "component",
+              "pattern": "@Component\\s*\\(",
+              "badge": "C"
+            },
+            {
+              "suffix": "directive",
+              "pattern": "@Directive\\s*\\(",
+              "badge": "D"
+            },
+            {
+              "suffix": "pipe",
+              "pattern": "@Pipe\\s*\\(",
+              "badge": "P"
+            },
+            {
+              "suffix": "module",
+              "pattern": "@NgModule\\s*\\(",
+              "badge": "M"
+            },
+            {
+              "suffix": "guard",
+              "pattern": ":\\s*(CanActivateFn|CanActivateChildFn|CanDeactivateFn|CanMatchFn)\\b|implements\\s+[^{]*\\b(CanActivate|CanActivateChild|CanDeactivate|CanMatch)\\b",
+              "badge": "G"
+            },
+            {
+              "suffix": "interceptor",
+              "pattern": ":\\s*HttpInterceptorFn\\b|implements\\s+[^{]*\\bHttpInterceptor\\b",
+              "badge": "I"
+            },
+            {
+              "suffix": "resolver",
+              "pattern": ":\\s*ResolveFn\\b|implements\\s+[^{]*\\bResolve\\s*<",
+              "badge": "R"
+            },
+            {
+              "suffix": "service",
+              "pattern": "@(Injectable|Service)\\s*\\(",
+              "badge": "S"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "suffix",
+              "pattern"
+            ],
+            "properties": {
+              "suffix": {
+                "type": "string",
+                "description": "Suffix to insert before the extension, e.g. \"service\"."
+              },
+              "pattern": {
+                "type": "string",
+                "description": "JavaScript regular expression source tested against the file contents."
+              },
+              "flags": {
+                "type": "string",
+                "default": "m",
+                "description": "Regular expression flags."
+              },
+              "badge": {
+                "type": "string",
+                "maxLength": 2,
+                "description": "1-2 character Explorer badge (defaults to the suffix's first letter)."
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        },
+        "angularSuffixes.include": {
+          "type": "string",
+          "default": "**/*.ts",
+          "description": "Glob of files whose contents are inspected."
+        },
+        "angularSuffixes.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/.angular/**",
+            "**/coverage/**",
+            "**/.git/**"
+          ],
+          "description": "Globs that are never indexed (files.exclude and search.exclude are applied as well)."
+        },
+        "angularSuffixes.excludePrimary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/*.spec.ts",
+            "**/*.test.ts",
+            "**/*.d.ts",
+            "**/*.stories.ts"
+          ],
+          "description": "Files that are never inspected themselves (they can still be renamed as companions)."
+        },
+        "angularSuffixes.companionExtensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            ".html",
+            ".css",
+            ".scss",
+            ".sass",
+            ".less",
+            ".spec.ts"
+          ],
+          "markdownDescription": "Sibling files sharing the stem of a detected file are renamed too, e.g. `home.html` → `home.component.html`, `home.spec.ts` → `home.component.spec.ts`. Empty list disables this."
+        },
+        "angularSuffixes.normalizeHyphenSuffix": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show `auth-guard.ts` as `auth.guard.ts` (instead of `auth-guard.guard.ts`)."
+        },
+        "angularSuffixes.workspaceSymbols": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Provide the Angular names as workspace symbols (Ctrl+T / `#` in Quick Open, and plain Ctrl+P when `#search.quickOpen.includeSymbols#` is on)."
+        },
+        "angularSuffixes.explorerBadges": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a badge (C, S, D, P, M, …) and a tooltip with the Angular name in the Explorer and on tabs."
+        },
+        "angularSuffixes.badgeCompanions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Also badge companion files (templates, styles, specs)."
+        },
+        "angularSuffixes.treeView": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the \"Angular Files\" view in the Explorer, listing files by their Angular names."
+        },
+        "angularSuffixes.editorTabLabels": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Show Angular names as editor tab titles by writing entries to `#workbench.editor.customLabels.patterns#` in **workspace** settings (`.vscode/settings.json`). Off by default because it edits a file that may be committed."
+        },
+        "angularSuffixes.promptToEnableQuickOpenSymbols": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Offer to turn on `#search.quickOpen.includeSymbols#` so Ctrl+P matches Angular names."
+        },
+        "angularSuffixes.maxFileSizeKB": {
+          "type": "number",
+          "default": 512,
+          "description": "Files larger than this are not inspected."
+        },
+        "angularSuffixes.maxFiles": {
+          "type": "number",
+          "default": 50000,
+          "description": "Maximum number of workspace files to index."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "npm run compile && node --test test/core.test.mjs",
+    "test:vscode": "npm run compile && node test/runVSCode.mjs",
+    "package": "npx -y @vscode/vsce@4.1.0 package --allow-missing-repository --skip-license"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@types/vscode": "^1.140.0",
+    "@vscode/test-electron": "^3.1.0",
+    "typescript": "5.9"
+  }
+}
