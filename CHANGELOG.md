@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- README: added a demo GIF.
+
 ## 0.1.1
 
 - First Marketplace release.

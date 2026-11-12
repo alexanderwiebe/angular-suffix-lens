@@ -2,6 +2,8 @@
 
 Angular 20's style guide dropped file suffixes, so `home.component.ts` becomes `home.ts` and `home.service.ts` becomes `home.ts` too. This extension reads each file, works out what it is, and shows the classic name in VS Code. **Nothing is renamed on disk.**
 
+![Cmd+P finds home.service.ts for a file named home.ts; badges, a Go to File picker and the Angular Files view show the Angular names](images/demo.gif)
+
 | On disk | Shown as | Because the file contains |
 |---|---|---|
 | `home/home.ts` | `home.component.ts` | `@Component(` |
