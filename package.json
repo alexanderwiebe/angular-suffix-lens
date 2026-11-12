@@ -3,8 +3,24 @@
   "displayName": "Angular Suffix Lens",
   "description": "Shows Angular suffixes (home.service.ts, home.component.ts) for suffix-less files like home.ts, in Quick Open, workspace symbols, the Explorer and editor tabs, without renaming anything on disk.",
   "version": "0.1.1",
-  "publisher": "local",
+  "publisher": "systems-by-aj",
+  "author": {
+    "name": "Systems by AJ"
+  },
   "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0B1220",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexanderwiebe/angular-suffix-lens.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexanderwiebe/angular-suffix-lens/issues"
+  },
+  "homepage": "https://github.com/alexanderwiebe/angular-suffix-lens#readme",
   "engines": {
     "vscode": "^1.140.0"
   },
@@ -20,8 +36,8 @@
   ],
   "activationEvents": [
     "workspaceContains:**/angular.json",
-    "workspaceContains:**/*.ts",
-    "onCommand:angularSuffixes.goToFile"
+    "workspaceContains:**/nx.json",
+    "workspaceContains:**/project.json"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -263,7 +279,8 @@
     "watch": "tsc -watch -p .",
     "test": "npm run compile && node --test test/core.test.mjs",
     "test:vscode": "npm run compile && node test/runVSCode.mjs",
-    "package": "npx -y @vscode/vsce@4.1.0 package --allow-missing-repository --skip-license"
+    "package": "npx -y @vscode/vsce@4.1.0 package",
+    "publish": "npx -y @vscode/vsce@4.1.0 publish"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
