@@ -3,7 +3,7 @@
   "displayName": "Angular Suffix Lens",
   "description": "Shows Angular suffixes (home.service.ts, home.component.ts) for suffix-less files like home.ts, in Quick Open, workspace symbols, the Explorer and editor tabs, without renaming anything on disk.",
   "version": "0.1.1",
-  "publisher": "systems-by-aj",
+  "publisher": "ajwiebe",
   "author": {
     "name": "Systems by AJ"
   },

@@ -5,7 +5,7 @@ const fs = require('fs');
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 exports.run = async function () {
-  const ext = vscode.extensions.getExtension('systems-by-aj.angular-suffix-lens');
+  const ext = vscode.extensions.getExtension('ajwiebe.angular-suffix-lens');
   const api = await ext.activate();
   await api.ready;
   const root = vscode.workspace.workspaceFolders[0].uri;
